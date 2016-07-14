@@ -12,10 +12,9 @@ var fs = require('fs');
 
 var getTwitter = new Twitter(twitterKeys);
 
-// variables to call the process in node
-
+// variables to call the process in node and for all the functions with the userRequestsFunc
 var userRequests = process.argv[2];
-var param = process.argv.slice(3).join['+'];
+var param = process.argv.slice(3);
 
 // function that calls user's request
 
@@ -32,18 +31,18 @@ function userRequestsFunc(userRequests, param){
                             break;
 
           case "spotify-this-song" :
-                            spotifyRequest();
+                            spotifyRequest(param);
                             break;
 
           case "movie-this" :
-                            getMovies();
+                            getMovies(param);
                             break;
 
           case "do-what-it-says" :
                             doWhatItSays();
                             break;
           default: 
-  console.log("Choice one of the following to get started: \nmy-tweets\nspotify-this-song\nmovie-this\ndo-what-it-says\n");
+  console.log("Type in one of the following after typing in 'Node liri.js': \nmy-tweets\nspotify-this-song\nmovie-this\ndo-what-it-says\n");
         }
 }
 
@@ -80,10 +79,6 @@ function spotifyRequest(song) {
     spotify(songName);
     console.log("your song name is: " + songName);
 } 
-//else {
-// song === undefined;
-//  song = "The Sign";
-// }
 
 spotify.search({ 
                 type: 'track', 
@@ -109,7 +104,7 @@ spotify.search({
             console.log(genre + ': ' + songInfo[genre]);
   
           }
-      
+        console.log('\n===============================================');
       };
     
     // Do something with 'data' 
@@ -120,9 +115,15 @@ spotify.search({
 // checks user's requests for movies 
 
 function getMovies (movieName) {
+       var movieName = userRequests;
+        if (movieName === 'undefined'){
+            movieName = 'Mr. Nobody';
+       }
+ 
   var movieSummary = 'http://www.omdbapi.com/?t=' + movieName +'&y=&plot=short&tomatoes=true&r=json';
-       request (movieSummary, function (error,response, body) {
+  request (movieSummary, function (error,response, body) {
           if (!error && response.statusCode === 200) {
+           // var movieName = userRequests;
                var movieObject = JSON.parse(body);
                     var movieInfo = {
                       "Movie Title": movieObject.Title,
@@ -138,20 +139,11 @@ function getMovies (movieName) {
             for (var movie in movieInfo) {
               // using console.log to see if the movieInfo variable displays correctly
               console.log(movie + ': ' + movieInfo[movie]);
-            }
+            };
 
-  }
-  // if the user requests something
-  // then do something
-  // to check if title is true. If not, Mr. Nobody will be displayed
-            if (movieName) {
-             var titleParam = movieName;
-             console.log("Your search worked!");
-            } else {
-              var titleParm = "Mr. Nobody";
-              console.log(" Mr. Nobody");
-            }        
-    });
+          };   
+      });
+    
 };
 
 function doWhatItSays() {
