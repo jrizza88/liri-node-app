@@ -45,37 +45,35 @@ function userRequestsFunc(userRequests, param){
         }
 }
 
-
-//tweets.get(path, params, callback);
-//tweets.post(path, params, callback);
-
 // checks the user's requests for Twitter
 
 // using callback function to call the twitter tweets 
 
 function twitter() {
 
-  console.log('most recent tweets: ' + params); 
+ // console.log('most recent tweets: ' + params); 
   //outputString('\n checking to see if this works\n');
- // console.log(body);
-// sets count to 20 tweets for my username
 
- 
-var params = {screen_name: '@jrizza88',
+// sets count to 20 tweets for my username
+  var params = {screen_name: '@jamartorres',
               tweetCount: 20
 
-};  
-getTwitter.get('statuses/user_timeline', params, function(error, tweets, response){
-  if (!error) {
-    var totalTweets = tweets.length;
-    for (var j = 0; j <tweets.length; j++)
-        console.log("Tweet #: "+ tweets.length + " " + "tweeted on" + tweets[j]);
-    }
-    console.log('THE recent tweets: ' + totalTweets); 
-    console.log(tweets);
-});
+  };  
 
-}
+  getTwitter.get('statuses/user_timeline', params, function(error, tweets, response){
+    if (!error) {
+      var numTweets = tweets.length;
+      for (var j = 0; j < tweets.length; j++) {
+        console.log("Tweet #: " + [j + 1] + " " + tweets[j]['text'] + ". tweeted on " + 
+                    tweets[j]['created_at'] + '.');
+      }
+      numTweets--;
+    }
+    
+    //console.log(tweets);
+  });
+   
+};
 
 // checks user's requests for Spotify
 
