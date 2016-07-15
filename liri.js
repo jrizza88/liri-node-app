@@ -115,15 +115,17 @@ spotify.search({
 // checks user's requests for movies 
 
 function getMovies (movieName) {
-       var movieName = userRequests;
-        if (movieName === 'undefined'){
-            movieName = 'Mr. Nobody';
+      // var movieName = userRequests;
+  if (!movieName == 'undefined'){
+           (movieName = 'Mr. Nobody');
        }
+
+//if(!movie){ then do the code to append it }
  
   var movieSummary = 'http://www.omdbapi.com/?t=' + movieName +'&y=&plot=short&tomatoes=true&r=json';
   request (movieSummary, function (error,response, body) {
           if (!error && response.statusCode === 200) {
-           // var movieName = userRequests;
+           
                var movieObject = JSON.parse(body);
                     var movieInfo = {
                       "Movie Title": movieObject.Title,
@@ -140,7 +142,7 @@ function getMovies (movieName) {
               // using console.log to see if the movieInfo variable displays correctly
               console.log(movie + ': ' + movieInfo[movie]);
             };
-
+              
           };   
       });
     
