@@ -14,7 +14,7 @@ var getTwitter = new Twitter(twitterKeys);
 
 // variables to call the process in node and for all the functions with the userRequestsFunc
 var userRequests = process.argv[2];
-var param = process.argv.slice(3);
+var param = process.argv.slice(3).join('+');
 
 // function that calls user's request
 
@@ -78,6 +78,7 @@ function spotifyRequest(song) {
       // invoke a spotify function
     spotify(songName);
     console.log("your song name is: " + songName);
+    console.log("\n===============================================");
 } 
 
 spotify.search({ 
@@ -92,7 +93,7 @@ spotify.search({
     var songVar = data['tracks']['items'];
       for (var j = 0; j < songVar.length; j++) {
         // as required by the homework, this displays the sing information
-        console.log('Artists: '+ songVar[j].artists.length);
+        console.log('Artists/Groups: '+ songVar[j].artists.length);
           var songInfo = {
             "Artist(s)": songVar[j] ["artists"][0]["name"],
             "Song Name": songVar[j] ["name"],
@@ -116,14 +117,13 @@ spotify.search({
 
 function getMovies (movieName) {
       // var movieName = userRequests;
-  if (!movieName == 'undefined'){
+  if (movieName == 'undefined'){
            (movieName = 'Mr. Nobody');
        }
 
-//if(!movie){ then do the code to append it }
  
   var movieSummary = 'http://www.omdbapi.com/?t=' + movieName +'&y=&plot=short&tomatoes=true&r=json';
-  request (movieSummary, function (error,response, body) {
+      request (movieSummary, function (error,response, body) {
           if (!error && response.statusCode === 200) {
            
                var movieObject = JSON.parse(body);
@@ -132,7 +132,7 @@ function getMovies (movieName) {
                       "Year": movieObject.Year,
                       "IMDB rating of movie": movieObject.imdbRating,
                       "Country Origin": movieObject.Country,
-                      "Langauge": movieObject.Language,
+                      "Language": movieObject.Language,
                       "Actors": movieObject.Actors,
                       "Rotten Tomatoes Rating": movieObject.tomatoRating,
                       "Rotten Tomatoes Link": movieObject.tomatoURL  
@@ -145,12 +145,14 @@ function getMovies (movieName) {
               
           };   
       });
+  
+
     
 };
 
 function doWhatItSays() {
   if (userRequests === 'do-what-it-says') {
-  fs.readFile('./random.txt', 'utf8', function read(err, data){
+    fs.readFile('./random.txt', 'utf8', function read(err, data){
         if (err) {
         console.error ("Error occured!");
         } 
@@ -164,8 +166,8 @@ function doWhatItSays() {
         userRequests = theRequest;
         param = newInfo[1];
         console.log(userRequests, param);
-
     });
   }
 }
+
 
